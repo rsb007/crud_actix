@@ -1,28 +1,18 @@
-#[macro_use]
 extern crate actix;
-#[macro_use]
 extern crate actix_web;
-#[macro_use]
 extern crate bytes;
 #[macro_use]
 extern crate cdrs;
 #[macro_use]
 extern crate cdrs_helpers_derive;
-#[macro_use]
 extern crate env_logger;
-#[macro_use]
 extern crate futures;
 #[macro_use]
 extern crate json;
-#[macro_use]
-extern crate maplit;
-#[macro_use]
 extern crate openssl;
-#[macro_use]
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-#[macro_use]
 extern crate serde_json;
 
 
