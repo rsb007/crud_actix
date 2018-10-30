@@ -26,6 +26,8 @@ extern crate serde_derive;
 extern crate serde_json;
 #[macro_use]
 extern crate listenfd;
+#[macro_use]
+extern crate crudactix;
 
 use listenfd::ListenFd;
 
@@ -65,7 +67,6 @@ pub struct Employee {
     pub emp_mobile: String,
 }
 
-
 fn connection() -> CurrentSession {
     let node = NodeTcpConfigBuilder::new("127.0.0.1:9042", NoneAuthenticator {}).build();
     let cluster_config = ClusterTcpConfig(vec![node]);
@@ -74,7 +75,7 @@ fn connection() -> CurrentSession {
 
     return no_compression;
 }
-
+/*
 fn insert(row : Employee)
 {
     let session = connection();
@@ -86,7 +87,7 @@ fn insert(row : Employee)
         .expect("insert error ");
 
 
-}
+}*/
 
 fn view(emp_id :String) -> Vec<Row>
 {
@@ -104,6 +105,7 @@ fn view(emp_id :String) -> Vec<Row>
 
     return row;
 }
+/*
 
 fn update(row : Employee) {
     let session = connection();
@@ -123,9 +125,11 @@ fn delete(emp : employee)  {
         .query_with_values(delete_struct_cql, query_values!(emp.emp_id))
         .expect("delete");
 }
+*/
 
 const MAX_SIZE: usize = 262_144; // max payload size is 256k
 
+/*
 
 
 fn insert_manual(
@@ -210,7 +214,7 @@ fn delete_manual(
 
         })
         .responder()
-}
+}*/
 
 fn select_manual(req:&HttpRequest) -> impl Responder
 {
@@ -246,9 +250,9 @@ fn main() {
         App::new()
             //enable logger
             .middleware(middleware::Logger::default())
-            .resource("/insert", |r| r.method(http::Method::POST).f(insert_manual))
-            .resource("/update", |r| r.method(http::Method::PUT).f(update_manual))
-            .resource("/delete", |r| r.method(http::Method::DELETE).f(delete_manual))
+            .resource("/insert", |r| r.method(http::Method::POST).f( crudactix::insert_table::insert_manual))
+            .resource("/update", |r| r.method(http::Method::PUT).f(crudactix::update_table::update_manual))
+            .resource("/delete", |r| r.method(http::Method::DELETE).f(crudactix::delete_table::delete_manual))
             .resource("/view",   |r| r.method(http::Method::GET).f(select_manual))
             .resource("/",|r|  r.f(|r| HttpResponse::Ok()))
     });

@@ -1,14 +1,23 @@
 
+use bytes::BytesMut;
+use cdrs::authenticators::NoneAuthenticator;
+use cdrs::cluster::{ClusterTcpConfig, NodeTcpConfigBuilder, TcpConnectionPool};
+use cdrs::cluster::session::{new as new_session, Session};
 use cdrs::frame::IntoBytes;
 use cdrs::load_balancing::RoundRobin;
 use cdrs::query::*;
-
+use cdrs::types::from_cdrs::FromCDRSByName;
 use cdrs::types::prelude::*;
+use cdrs::types::prelude::*;
+use futures::{Future, Stream};
+use json::JsonValue;
 use std::collections::HashMap;
-use cdrs::frame::TryFromRow;
-use dbconnection;
+use cdrs::types::rows::Row;
+use std::str;
+use futures::collect;
 
-#[derive(Clone, Debug, IntoCDRSValue, TryFromRow, PartialEq)]
+
+#[derive(Clone, Debug, IntoCDRSValue, PartialEq, Serialize, Deserialize)]
 pub struct Employee {
     pub emp_id: String,
     pub emp_name: String,
@@ -16,15 +25,7 @@ pub struct Employee {
     pub emp_mobile: String,
 }
 
-/*
-
-pub fn view_of_employee(rows: &Vec<Row>){
-
-   *//* let con = dbconnection::connection();
-    let rows: Vec<Row> = crudactix::select_table::select_struct(&con);*//*
-
-    for row in rows {
-        let my_row: Employee = Employee::try_from_row(row).expect("into Employee Struct");
-        format!("Struct got :{}", my_row.emp_name);
-    }
-}*/
+#[derive(Clone, Debug, IntoCDRSValue, PartialEq, Serialize, Deserialize)]
+pub struct employee {
+    pub emp_id : String,
+}
